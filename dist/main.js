@@ -1,0 +1,1 @@
+console.log("тоо: ".concat(44));

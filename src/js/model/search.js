@@ -4,15 +4,18 @@ export default class Search {
   constructor(query) {
     this.query = query;
   }
+
   async doSearch() {
     try {
       let result = await axios(
         "https://forkify-api.herokuapp.com/api/search?q=" + this.query
       );
-      this.results = result.data.recipes;
-      return this.results;
+
+      this.result = result.data.recipes;
+
+      return this.result;
     } catch (error) {
-      alert("Алдаа гарлаа: " + error);
+      console.log("Асуудал гарлаа : " + error);
     }
   }
 }

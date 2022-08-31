@@ -65,24 +65,31 @@ const controlRecipe = async () => {
   // 1. URL-аас ID-ийг салгаж авна.
   const id = window.location.hash.replace("#", "");
 
-  // 2. Жорын моделийг үүгэнэ.
-  state.recipe = new Recipe(id);
+  // URL дээр ID байгаа эсэхийг шалгаад ажиллах
+  if (id) {
+    // 2. Жорын моделийг үүгэнэ.
+    state.recipe = new Recipe(id);
 
-  // 3. UI дэлгэцийг бэлтгэнэ.
-  clearRecipe();
-  renderLoader(elements.recipeDiv);
-  highlightRecipe(id);
+    // 3. UI дэлгэцийг бэлтгэнэ.
+    clearRecipe();
+    renderLoader(elements.recipeDiv);
+    highlightRecipe(id);
 
-  // 4. Жорыг татаж авна.
-  await state.recipe.getRecipe();
+    // 4. Жорыг татаж авна.
+    await state.recipe.getRecipe();
 
-  // 5. Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно.
-  clearLoader();
-  state.recipe.calcTime();
-  state.recipe.calcHumans();
+    // 5. Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно.
+    clearLoader();
+    state.recipe.calcTime();
+    state.recipe.calcHumans();
 
-  // 6. Жороо дэлгэцэнд гаргана.
-  renderRecipe(state.recipe);
+    // 6. Жороо дэлгэцэнд гаргана.
+    renderRecipe(state.recipe);
+  }
 };
-window.addEventListener("hashchange", controlRecipe);
-window.addEventListener("load", controlRecipe);
+
+// window.addEventListener("hashchange", controlRecipe);
+// window.addEventListener("load", controlRecipe);
+["hashchange", "load"].forEach((e) =>
+  window.addEventListener(e, controlRecipe)
+);

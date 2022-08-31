@@ -40,3 +40,13 @@ elements.searchForm.addEventListener("submit", (e) => {
   e.preventDefault(); // автомат ажиллагааг нь зогсоодог функц.
   controlSearch();
 });
+
+elements.pageButtons.addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-inline");
+
+  if (btn) {
+    const gotoPage = parseInt(btn.dataset.goto);
+    searchView.clearSearchResults();
+    searchView.renderRecipes(state.search.result, gotoPage);
+  }
+});

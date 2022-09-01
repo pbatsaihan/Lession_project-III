@@ -17,8 +17,6 @@ import * as likeView from "./view/likeView";
  */
 
 const state = {};
-// Like цэсийг хаах
-likeView.toggleLikeMenu(0);
 
 /***********************************************************
  * Хайлтын контроллер = Модел --> Контроллер <-- Харагдац  *
@@ -69,7 +67,6 @@ elements.pageButtons.addEventListener("click", (e) => {
 const controlRecipe = async () => {
   // 1. URL-аас ID-ийг салгаж авна.
   const id = window.location.hash.replace("#", "");
-  if (!state.likes) state.likes = new Like();
 
   // URL дээр ID байгаа эсэхийг шалгаад ажиллах
   if (id) {
@@ -99,6 +96,15 @@ const controlRecipe = async () => {
 ["hashchange", "load"].forEach((e) =>
   window.addEventListener(e, controlRecipe)
 );
+
+window.addEventListener("load", (e) => {
+  if (!state.likes) state.likes = new Like();
+
+  // Like цэсийг хаах эсэх
+  likeView.toggleLikeMenu(state.likes.getCountOfLikes());
+
+  state.likes.likes.forEach((like) => likeView.renderLike(like));
+});
 
 /***********************************************************
  * Орцын контроллер = Модел --> Контроллер <-- Харагдац  *

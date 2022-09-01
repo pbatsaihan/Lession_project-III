@@ -1,11 +1,15 @@
 export default class Likes {
   constructor() {
-    this.likes = [];
+    this.readDataFromLocal();
+    if (!this.likes) this.likes = [];
   }
 
   addLike(id, title, publisher, image_url) {
     const like = { id, title, publisher, image_url };
     this.likes.push(like);
+
+    this.saveDataToLocal();
+
     return like;
   }
 
@@ -15,6 +19,8 @@ export default class Likes {
 
     // Дээрх индекстэй элементийг массиваас устгана
     this.likes.splice(index, 1);
+
+    this.saveDataToLocal();
   }
 
   isLiked(id) {
@@ -23,5 +29,13 @@ export default class Likes {
 
   getCountOfLikes() {
     return this.likes.length;
+  }
+
+  saveDataToLocal() {
+    localStorage.setItem("likes", JSON.stringify(this.likes));
+  }
+
+  readDataFromLocal() {
+    this.likes = JSON.parse(localStorage.getItem("likes"));
   }
 }

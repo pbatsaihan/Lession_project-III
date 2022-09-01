@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "uniqid": "^5.4.0"
   }
 }

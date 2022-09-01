@@ -3,6 +3,8 @@ import { elements, renderLoader, clearLoader } from "./view/base";
 import * as searchView from "./view/searchView";
 import Recipe from "./model/recipe";
 import { renderRecipe, clearRecipe, highlightRecipe } from "./view/recipeView";
+import List from "./model/list";
+import * as listView from "./view/listView";
 
 /**
  * Web app төлөв
@@ -93,3 +95,37 @@ const controlRecipe = async () => {
 ["hashchange", "load"].forEach((e) =>
   window.addEventListener(e, controlRecipe)
 );
+
+/***********************************************************
+ * Орцын контроллер = Модел --> Контроллер <-- Харагдац  *
+ ***********************************************************/
+
+const controlList = () => {
+  // Найрлагын модел үүсгэнэ
+  state.list = new List();
+  // Өмнө харагдаж байсан орцын жагсаалтыг арилгана
+  listView.clearItem();
+
+  // Модел руу харагдаж байгаа орцуудыг нэмнэ
+  state.recipe.ingredients.forEach((n) => {
+    const item = state.list.addItem(n);
+    listView.renderItem(item);
+  });
+};
+
+elements.recipeDiv.addEventListener("click", (e) => {
+  if (e.target.matches(".recipe__btn, .recipe__btn *")) {
+    controlList();
+  }
+});
+
+elements.shoppingList.addEventListener("click", (e) => {
+  // Клик хийсэн li элементийн data-itemid атрибутыг шүүж авах
+  const id = e.target.closest(".shopping__item").dataset.itemid;
+
+  // Авсан id-тай орцыг моделиос устгана
+  state.list.deleteItem(id);
+
+  // Дээрх id-тэй орцыг дэлгэцээс арилгана
+  listView.deleteItem(id);
+});
